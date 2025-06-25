@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contáctanos - Sambil Online</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-content">
+            <button class="hamburger-menu" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo">
+                <a href="index.html">Sambil Online</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon">
+                <button id="view-cart-btn">🛒 <span id="cart-count">0</span></button>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar-menu">
+        <button class="close-menu-btn">&times;</button>
+        <nav>
+            <h2>Departamentos</h2>
+            <ul>
+                <li><a href="#" data-category="electrodomesticos">Electrodomésticos</a></li>
+                <li><a href="#" data-category="tecnologia">Tecnología</a></li>
+                <li><a href="#" data-category="hogar">Hogar</a></li>
+                <li><a href="#" data-category="moda">Moda</a></li>
+                <li><a href="#" data-category="deportes">Deportes</a></li>
+                <li><a href="#" data-category="salud-belleza">Salud y Belleza</a></li>
+                <li><a href="#" data-category="juguetes">Juguetes</a></li>
+            </ul>
+        </nav>
+        <nav class="secondary-nav">
+            <ul>
+                <li><a href="directorio.html">Directorio</a></li>
+                <li><a href="vende_con_nosotros.html">Vende con Nosotros</a></li>
+                <li><a href="como_comprar.html">Cómo Comprar</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container">
+        <section class="contact-form-section">
+            <h2>Contáctanos</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required minlength="3">
+                    <div class="error-message" id="name-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="email-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Asunto:</label>
+                    <input type="text" id="subject" name="subject" required>
+                    <div class="error-message" id="subject-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required minlength="10"></textarea>
+                    <div class="error-message" id="message-error"></div>
+                </div>
+                <button type="submit">Enviar Mensaje</button>
+                <div class="success-message" id="form-success"></div>
+            </form>
+        </section>
+    </main>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content">
+            <button class="close-cart-btn">&times;</button>
+            <h2>Tu Carrito de Compras</h2>
+            <div id="cart-items">
+                </div>
+            <div class="cart-summary">
+                Total: $<span id="cart-total">0.00</span>
+            </div>
+            <button class="checkout-btn">Proceder al Pago (Simulado)</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Sambil Online. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script> <script src="js/main.js"></script> <script>
+        // Lógica de validación del formulario de contacto
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('contact-form');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const subjectInput = document.getElementById('subject');
+            const messageInput = document.getElementById('message');
+            const successMessage = document.getElementById('form-success');
+
+            const validateField = (input, errorMessageElement, validationFn) => {
+                if (validationFn(input.value)) {
+                    input.classList.remove('invalid');
+                    errorMessageElement.textContent = '';
+                    return true;
+                } else {
+                    input.classList.add('invalid');
+                    errorMessageElement.textContent = input.validationMessage || 'Campo inválido.';
+                    return false;
+                }
+            };
+
+            const validateEmail = (email) => {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            };
+
+            nameInput.addEventListener('input', () => validateField(nameInput, document.getElementById('name-error'), (val) => val.length >= 3));
+            emailInput.addEventListener('input', () => validateField(emailInput, document.getElementById('email-error'), validateEmail));
+            subjectInput.addEventListener('input', () => validateField(subjectInput, document.getElementById('subject-error'), (val) => val.length > 0));
+            messageInput.addEventListener('input', () => validateField(messageInput, document.getElementById('message-error'), (val) => val.length >= 10));
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                isValid = validateField(nameInput, document.getElementById('name-error'), (val) => val.length >= 3) && isValid;
+                isValid = validateField(emailInput, document.getElementById('email-error'), validateEmail) && isValid;
+                isValid = validateField(subjectInput, document.getElementById('subject-error'), (val) => val.length > 0) && isValid;
+                isValid = validateField(messageInput, document.getElementById('message-error'), (val) => val.length >= 10) && isValid;
+
+                if (isValid) {
+                    successMessage.textContent = '¡Mensaje enviado con éxito! (Esto es solo una simulación)';
+                    successMessage.style.display = 'block';
+                    form.reset();
+                    // Ocultar mensaje después de un tiempo
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                } else {
+                    successMessage.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
