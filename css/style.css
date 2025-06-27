@@ -124,10 +124,10 @@ ul {
 /* Sidebar Menu */
 .sidebar-menu {
     position: fixed;
-    top: 0;
+    top: var(--header-height);
     left: -var(--sidebar-width); /* Oculto por defecto */
     width: var(--sidebar-width);
-    height: 100%;
+    height: calc(100% - var(--header-height));
     background-color: var(--dark-card-bg); /* Fondo oscuro para el menú lateral */
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
     padding: 20px;
